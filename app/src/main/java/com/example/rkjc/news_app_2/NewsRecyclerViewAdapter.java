@@ -13,6 +13,9 @@ import java.util.ArrayList;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,10 +68,18 @@ public class NewsRecyclerViewAdapter  extends RecyclerView.Adapter<NewsRecyclerV
         //Instantiated views now have set view
         public NewsViewHolder(View itemView){
             super(itemView);
+
+            //imageView with Picasso
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
+
+
+
             title = (TextView) itemView.findViewById(R.id.textViewTitle);
             description = (TextView) itemView.findViewById(R.id.textViewDescription);
             date = (TextView) itemView.findViewById(R.id.textViewDate);
+            url = (TextView) itemView.findViewById(R.id.textViewURL);
+
+
 
 
             //Include onClickListener to view (opens window to that url)
@@ -88,6 +99,9 @@ public class NewsRecyclerViewAdapter  extends RecyclerView.Adapter<NewsRecyclerV
             title.setText(mNewsItems.get(listIndex).getmTitle());
             description.setText(mNewsItems.get(listIndex).getmDescription());
             date.setText("Date: " + mNewsItems.get(listIndex).getmPublishedAt());
+            url.setText(mNewsItems.get(listIndex).getmUrl());
+
+            Picasso.get().load(mNewsItems.get(listIndex).getmUrlToImage()).fit().into(imageView);
 
         }
     }
