@@ -1,5 +1,6 @@
 package com.example.rkjc.news_app_2;
 
+import android.app.PendingIntent;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -7,6 +8,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -138,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    //Instantiate a Job Dispatcher
     public void executeJobDispatcher(){
 
         jobDispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
@@ -168,5 +171,22 @@ public class MainActivity extends AppCompatActivity {
 
         jobDispatcher.mustSchedule(job);
         Toast.makeText(this, "Job Scheduled", Toast.LENGTH_LONG).show();
+    }
+
+
+    public void notifyNotification(){
+        NotificationCompat.Builder buildNotification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_update)
+                .setContentTitle("News Application")
+                .setContentText("The database is synced!")
+                .setAutoCancel(true);
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        buildNotification.setContentIntent(contentIntent);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(0, buildNotification.build());
+
     }
 }

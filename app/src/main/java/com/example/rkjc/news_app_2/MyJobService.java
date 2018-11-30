@@ -20,7 +20,7 @@ public class MyJobService extends JobService {
 
 
     BackgroundTask backgroundTask;
-
+    MainActivity mainActivity;
 
     private List<NewsItem> newsItems = new ArrayList<>();
     private NewsItemRepository newsItemRepository;
@@ -28,13 +28,14 @@ public class MyJobService extends JobService {
     @Override
     public boolean onStartJob(final JobParameters job) {
 
+       // mainActivity.notifyNotification();
+
         backgroundTask = new BackgroundTask(){
 
             @Override
             protected void onPostExecute(String s) {
                 Log.d("TAAAAAG", "MyJobService Executed!!");
 
-                
 
                 Toast.makeText(getApplicationContext(), "Message from Background Task: " + s, Toast.LENGTH_LONG).show();
                 jobFinished(job, false);
@@ -57,6 +58,7 @@ public class MyJobService extends JobService {
         protected String doInBackground(Void...voids){
 
             Log.d("EXECUTING IN BACKGROUND", "Message");
+
 
             return "Background Executed";
         }
