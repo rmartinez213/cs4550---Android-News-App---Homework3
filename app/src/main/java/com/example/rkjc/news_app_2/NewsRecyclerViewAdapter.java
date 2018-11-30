@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
+
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class NewsRecyclerViewAdapter  extends RecyclerView.Adapter<NewsRecyclerV
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
-        View view = inflater.inflate(R.layout.news_item, parent, shouldAttachToParentImmediately);
+        View view = inflater.inflate(R.layout.card_layout, parent, shouldAttachToParentImmediately);
         NewsViewHolder viewHolder = new NewsViewHolder(view);
         return viewHolder;
     }
@@ -54,6 +56,7 @@ public class NewsRecyclerViewAdapter  extends RecyclerView.Adapter<NewsRecyclerV
 
 
     public class NewsViewHolder extends RecyclerView.ViewHolder{
+        ImageView imageView;
         TextView title;
         TextView description;
         TextView date;
@@ -62,10 +65,10 @@ public class NewsRecyclerViewAdapter  extends RecyclerView.Adapter<NewsRecyclerV
         //Instantiated views now have set view
         public NewsViewHolder(View itemView){
             super(itemView);
-            title = (TextView) itemView.findViewById(R.id.title);
-            description = (TextView) itemView.findViewById(R.id.description);
-            date = (TextView) itemView.findViewById(R.id.date);
-            url = (TextView) itemView.findViewById(R.id.url);
+            imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            title = (TextView) itemView.findViewById(R.id.textViewTitle);
+            description = (TextView) itemView.findViewById(R.id.textViewDescription);
+            date = (TextView) itemView.findViewById(R.id.textViewDate);
 
 
             //Include onClickListener to view (opens window to that url)
@@ -82,10 +85,10 @@ public class NewsRecyclerViewAdapter  extends RecyclerView.Adapter<NewsRecyclerV
 
         //bind the texts with their views
         void bind(final int listIndex){
-            title.setText("Title:" + mNewsItems.get(listIndex).getmTitle());
-            description.setText("Description" + mNewsItems.get(listIndex).getmDescription());
-            date.setText("Date" + mNewsItems.get(listIndex).getmPublishedAt());
-            url.setText(mNewsItems.get(listIndex).getmUrl());
+            title.setText(mNewsItems.get(listIndex).getmTitle());
+            description.setText(mNewsItems.get(listIndex).getmDescription());
+            date.setText("Date: " + mNewsItems.get(listIndex).getmPublishedAt());
+
         }
     }
 }
