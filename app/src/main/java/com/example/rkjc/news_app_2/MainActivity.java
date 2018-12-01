@@ -1,5 +1,8 @@
 package com.example.rkjc.news_app_2;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -7,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -54,9 +58,12 @@ public class MainActivity extends AppCompatActivity {
     private NewsRecyclerViewAdapter mAdapter;
     private List<NewsItem> newsItems = new ArrayList<>();
 
+    //For job dispatcher
     private static final String Job_Tag = "my_job_tag";
     private FirebaseJobDispatcher jobDispatcher;
 
+    //For Notification
+    private NotificationManagerCompat notificationManager;
 
 
     @Override
@@ -83,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
 
         //New Code Homework3
         executeJobDispatcher();
+
+//        sendOnChannel1((RecyclerView)findViewById(R.id.news_recyclerview));
+
+
     }
 
 
@@ -161,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                 // overwrite an existing job with the same tag
                 .setReplaceCurrent(true)
                 // retry with exponential backoff
-                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
                 // sets constraints based on device status
                 .setConstraints(
                         // only executes when device is on a network (does http request from news API)
@@ -174,19 +185,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void notifyNotification(){
-        NotificationCompat.Builder buildNotification = new NotificationCompat.Builder(this)
+
+
+    public void sendOnChannel1(View v){
+        Notification notification = new NotificationCompat.Builder(this, "1")
                 .setSmallIcon(R.drawable.ic_update)
                 .setContentTitle("News Application")
-                .setContentText("The database is synced!")
-                .setAutoCancel(true);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .build();
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        buildNotification.setContentIntent(contentIntent);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(0, buildNotification.build());
-
+        notificationManager.notify(1, notification);
     }
 }
